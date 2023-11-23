@@ -53,7 +53,6 @@ const UserSchema = new Schema<User>({
   email: { type: String, required: true },
   isActive: { type: Boolean },
   hobbies: [String],
-
   address: AddressSchema,
   orders: [OrdersSchema],
 });

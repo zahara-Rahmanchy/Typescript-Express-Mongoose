@@ -8,11 +8,21 @@ const createUser = async (req: Request, res: Response) => {
   const result = await UserServices.createUserIntoDB(user);
   res.status(200).json({
     success: true,
-    message: 'User is created Successfully',
+    message: 'User created successfully!',
+    data: result,
+  });
+};
+
+const getAllUsers = async (req: Request, res: Response) => {
+  const result = await UserServices.getAllUserFromDB();
+  res.status(200).json({
+    success: true,
+    message: 'Users fetched successfully!',
     data: result,
   });
 };
 
 export const UserControllers = {
   createUser,
+  getAllUsers,
 };
