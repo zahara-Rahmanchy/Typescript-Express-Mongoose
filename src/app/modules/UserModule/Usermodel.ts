@@ -52,10 +52,10 @@ const UserSchema = new Schema<User>({
   age: { type: Number, required: true },
   email: { type: String, required: true },
   isActive: { type: Boolean },
-  hobbies: { String },
+  hobbies: [String],
 
   address: AddressSchema,
-  orders: OrdersSchema,
+  orders: [OrdersSchema],
 });
 
 export const UserModel = model<User>('User', UserSchema);
