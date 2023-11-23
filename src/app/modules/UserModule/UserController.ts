@@ -22,7 +22,18 @@ const getAllUsers = async (req: Request, res: Response) => {
   });
 };
 
+const getUserById = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const result = await UserServices.getUserByIdFromDB(Number(userId));
+  res.status(200).json({
+    success: true,
+    message: '"User fetched successfully!',
+    data: result,
+  });
+};
+
 export const UserControllers = {
   createUser,
   getAllUsers,
+  getUserById,
 };
