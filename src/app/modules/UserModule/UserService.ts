@@ -18,6 +18,7 @@ const getAllUserFromDB = async () => {
 
 const getUserByIdFromDB = async (userId: number) => {
   const result = await UserModel.findOne({ userId: userId }).select({
+    _id: 0,
     username: 1,
     fullName: 1,
     age: 1,
@@ -28,8 +29,25 @@ const getUserByIdFromDB = async (userId: number) => {
   });
   return result;
 };
+
+const updateUserInDB = async (userId: number, userdata: User) => {
+  const result = await UserModel.findOneAndUpdate({ userId }, userdata, {
+    new: true,
+    projection: { _id: 0, password: 0 },
+  });
+  console.log(userdata);
+  return result;
+};
+
+const deleteUserFromDb = async (userId: number) => {
+  const result = await UserModel.deleteOne({ userId });
+
+  return result;
+};
 export const UserServices = {
   createUserIntoDB,
   getAllUserFromDB,
   getUserByIdFromDB,
+  updateUserInDB,
+  deleteUserFromDb,
 };

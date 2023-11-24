@@ -19,7 +19,7 @@ export type User = {
   userId: number;
   username: string;
   password: string;
-  fullname: FullName;
+  fullName: FullName;
   age: number;
   email: string;
   isActive: boolean;
