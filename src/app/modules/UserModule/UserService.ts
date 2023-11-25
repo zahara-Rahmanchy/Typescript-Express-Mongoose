@@ -117,6 +117,24 @@ const getOrdersByIdFromDB = async (userId: number) => {
   return result;
 };
 
+// calculate the total price/cost of the order
+const getTotalPriceValue = async (userId: number) => {
+  const result = await UserModel.findOne({ userId: userId }).select({
+    _id: 0,
+    orders: 1,
+  });
+
+  // console.log(orders);
+  let totalPrice = 0;
+  // eslint-disable-next-line no-unsafe-optional-chaining
+  if (result && result.orders) {
+    for (const order of result.orders) {
+      totalPrice += order.price * order.quantity;
+    }
+  }
+  return totalPrice;
+};
+
 export const UserServices = {
   createUserIntoDB,
   getAllUserFromDB,
@@ -124,4 +142,5 @@ export const UserServices = {
   updateUserInDB,
   deleteUserFromDb,
   getOrdersByIdFromDB,
+  getTotalPriceValue,
 };

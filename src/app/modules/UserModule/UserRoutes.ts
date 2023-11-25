@@ -19,4 +19,8 @@ router.delete('/:userId', UserControllers.deleteUser);
 
 // get orders of specific user
 router.get('/:userId/orders', UserControllers.getOrdersById);
+
+// get total const/price
+router.get('/:userId/orders/total-price', UserControllers.getTotalPrice);
+//
 export const UserRoutes = router;
