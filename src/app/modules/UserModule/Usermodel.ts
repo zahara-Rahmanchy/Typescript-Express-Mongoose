@@ -61,7 +61,6 @@ const UserSchema = new Schema<User, IUserModel>({
     type: String,
     required: true,
     message: 'Username is required',
-    unique: true,
   },
   password: {
     type: String,
