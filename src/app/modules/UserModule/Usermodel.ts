@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { Address, FullName, Orders, User } from './UserInterface';
+import { Address, FullName, Orders, User, IUserModel } from './UserInterface';
 
 const FullNameSchema = new Schema<FullName>({
   firstName: {
@@ -49,7 +49,7 @@ const AddressSchema = new Schema<Address>({
   },
 });
 
-const UserSchema = new Schema<User>({
+const UserSchema = new Schema<User, IUserModel>({
   userId: {
     type: Number,
     required: true,
@@ -61,6 +61,13 @@ const UserSchema = new Schema<User>({
     required: true,
     message: 'Username is required',
     unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    message: 'Password is required',
+    minlength: [6, 'Password should be at least 6 characters'],
+    maxlength: [20, 'Password cannot be more than 20 characters'],
   },
   fullName: {
     type: FullNameSchema,
@@ -87,4 +94,11 @@ const UserSchema = new Schema<User>({
   },
 });
 
-export const UserModel = model<User>('User', UserSchema);
+// creating static method to check User
+
+UserSchema.statics.isUserExists = async function (userId: number) {
+  const existingUser = await UserModel.findOne({ userId: userId });
+  return existingUser;
+};
+
+export const UserModel = model<User, IUserModel>('User', UserSchema);

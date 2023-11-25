@@ -7,6 +7,7 @@ const createUserIntoDB = async (user: User) => {
 };
 const getAllUserFromDB = async () => {
   const result = await UserModel.find({}).select({
+    _id: 0,
     username: 1,
     fullName: 1,
     age: 1,
@@ -17,6 +18,19 @@ const getAllUserFromDB = async () => {
 };
 
 const getUserByIdFromDB = async (userId: number) => {
+  const userExist = await UserModel.isUserExists(userId);
+  if (!userExist) {
+    throw new Error(
+      JSON.stringify({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      }),
+    );
+  }
   const result = await UserModel.findOne({ userId: userId }).select({
     _id: 0,
     username: 1,
@@ -31,6 +45,19 @@ const getUserByIdFromDB = async (userId: number) => {
 };
 
 const updateUserInDB = async (userId: number, userdata: User) => {
+  const userExist = await UserModel.isUserExists(userId);
+  if (!userExist) {
+    throw new Error(
+      JSON.stringify({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      }),
+    );
+  }
   const result = await UserModel.findOneAndUpdate({ userId }, userdata, {
     new: true,
     projection: { _id: 0, password: 0 },
@@ -40,6 +67,19 @@ const updateUserInDB = async (userId: number, userdata: User) => {
 };
 
 const deleteUserFromDb = async (userId: number) => {
+  const userExist = await UserModel.isUserExists(userId);
+  if (!userExist) {
+    throw new Error(
+      JSON.stringify({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      }),
+    );
+  }
   const result = await UserModel.deleteOne({ userId });
 
   return result;
