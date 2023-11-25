@@ -42,6 +42,7 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+// get user by id
 const getUserById = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -106,10 +107,34 @@ const deleteUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+// get orders by id
+const getOrdersById = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await UserServices.getOrdersByIdFromDB(Number(userId));
+    res.status(200).json({
+      success: true,
+      message: 'Order fetched successfully!',
+      data: result,
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: error,
+      message: error.message || 'Something went wrong!',
+      code: 500,
+      data: null,
+    });
+  }
+};
+
 export const UserControllers = {
   createUser,
   getAllUsers,
   getUserById,
   updateUserById,
   deleteUser,
+  getOrdersById,
 };

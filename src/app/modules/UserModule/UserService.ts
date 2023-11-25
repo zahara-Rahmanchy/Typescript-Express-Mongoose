@@ -1,10 +1,13 @@
 import { User } from './UserInterface';
 import { UserModel } from './Usermodel';
 
+// create user
 const createUserIntoDB = async (user: User) => {
   const result = await UserModel.create(user);
   return result;
 };
+
+// get users
 const getAllUserFromDB = async () => {
   const result = await UserModel.find({}).select({
     _id: 0,
@@ -17,6 +20,7 @@ const getAllUserFromDB = async () => {
   return result;
 };
 
+// get user by id
 const getUserByIdFromDB = async (userId: number) => {
   const userExist = await UserModel.isUserExists(userId);
   if (!userExist) {
@@ -44,6 +48,7 @@ const getUserByIdFromDB = async (userId: number) => {
   return result;
 };
 
+// update user
 const updateUserInDB = async (userId: number, userdata: User) => {
   const userExist = await UserModel.isUserExists(userId);
   if (!userExist) {
@@ -66,6 +71,7 @@ const updateUserInDB = async (userId: number, userdata: User) => {
   return result;
 };
 
+// delete user
 const deleteUserFromDb = async (userId: number) => {
   const userExist = await UserModel.isUserExists(userId);
   if (!userExist) {
@@ -84,10 +90,38 @@ const deleteUserFromDb = async (userId: number) => {
 
   return result;
 };
+
+// const storeOrdersInDB =async (userId: number,orderData:Orders) => {
+//   const userExist = await UserModel.isUserExists(userId);
+//   if (!userExist) {
+//     throw new Error(
+//       JSON.stringify({
+//         success: false,
+//         message: 'User not found',
+//         error: {
+//           code: 404,
+//           description: 'User not found!',
+//         },
+//       }),
+//     );
+//   }
+
+// }
+
+// get orders of a user by id
+const getOrdersByIdFromDB = async (userId: number) => {
+  const result = await UserModel.findOne({ userId: userId }).select({
+    _id: 0,
+    orders: 1,
+  });
+  return result;
+};
+
 export const UserServices = {
   createUserIntoDB,
   getAllUserFromDB,
   getUserByIdFromDB,
   updateUserInDB,
   deleteUserFromDb,
+  getOrdersByIdFromDB,
 };
