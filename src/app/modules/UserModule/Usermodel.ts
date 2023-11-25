@@ -121,4 +121,15 @@ UserSchema.statics.isUserExists = async function (userId: number) {
   return existingUser;
 };
 
+UserSchema.statics.areOrdersPresent = async function (userId: number) {
+  const data = await UserModel.findOne({ userId: userId }).select({
+    orders: 1,
+  });
+  let isOrder;
+  if (data && data.orders) {
+    isOrder = data.orders.length > 0 ? true : false;
+  }
+
+  return isOrder;
+};
 export const UserModel = model<User, IUserModel>('User', UserSchema);

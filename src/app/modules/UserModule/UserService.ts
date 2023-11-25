@@ -1,4 +1,4 @@
-import { User } from './UserInterface';
+import { Orders, User } from './UserInterface';
 import { UserModel } from './Usermodel';
 
 // create user
@@ -91,25 +91,68 @@ const deleteUserFromDb = async (userId: number) => {
   return result;
 };
 
-// const storeOrdersInDB =async (userId: number,orderData:Orders) => {
-//   const userExist = await UserModel.isUserExists(userId);
-//   if (!userExist) {
-//     throw new Error(
-//       JSON.stringify({
-//         success: false,
-//         message: 'User not found',
-//         error: {
-//           code: 404,
-//           description: 'User not found!',
-//         },
-//       }),
-//     );
-//   }
+const storeOrdersInDB = async (userId: number, orderData: Orders[]) => {
+  const userExist = await UserModel.isUserExists(userId);
+  if (!userExist) {
+    throw new Error(
+      JSON.stringify({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      }),
+    );
+  }
+  console.log('orderData: ', orderData);
 
-// }
+  const isOrdersArray = await UserModel.areOrdersPresent(userId);
+  console.log(isOrdersArray);
+  if (isOrdersArray) {
+    const result = await UserModel.updateOne(
+      { userId },
+      {
+        $push: {
+          orders: {
+            $each: [...orderData],
+          },
+        },
+      },
+    );
+    console.log(result);
+    return result;
+  } else {
+    const result = await UserModel.updateOne(
+      { userId },
+      {
+        $addToSet: {
+          orders: {
+            $each: [...orderData],
+          },
+        },
+      },
+    );
+    console.log(result);
+    return result;
+  }
+};
 
 // get orders of a user by id
 const getOrdersByIdFromDB = async (userId: number) => {
+  const userExist = await UserModel.isUserExists(userId);
+  if (!userExist) {
+    throw new Error(
+      JSON.stringify({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      }),
+    );
+  }
   const result = await UserModel.findOne({ userId: userId }).select({
     _id: 0,
     orders: 1,
@@ -119,6 +162,19 @@ const getOrdersByIdFromDB = async (userId: number) => {
 
 // calculate the total price/cost of the order
 const getTotalPriceValue = async (userId: number) => {
+  const userExist = await UserModel.isUserExists(userId);
+  if (!userExist) {
+    throw new Error(
+      JSON.stringify({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      }),
+    );
+  }
   const result = await UserModel.findOne({ userId: userId }).select({
     _id: 0,
     orders: 1,
@@ -141,6 +197,7 @@ export const UserServices = {
   getUserByIdFromDB,
   updateUserInDB,
   deleteUserFromDb,
+  storeOrdersInDB,
   getOrdersByIdFromDB,
   getTotalPriceValue,
 };

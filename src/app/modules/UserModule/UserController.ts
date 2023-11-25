@@ -87,6 +87,7 @@ const updateUserById = async (req: Request, res: Response) => {
   }
 };
 
+// delete use using id
 const deleteUser = async (req: Request, res: Response) => {
   try {
     const result = await UserServices.deleteUserFromDb(
@@ -96,6 +97,32 @@ const deleteUser = async (req: Request, res: Response) => {
       success: true,
       message: 'User deleted successfully!',
       data: result,
+    }); // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: error,
+      message: error.message || 'Something went wrong!',
+      code: 500,
+      data: null,
+    });
+  }
+};
+
+// store orders to db for specifc uer
+
+const storeOrdrs = async (req: Request, res: Response) => {
+  try {
+    const { orders } = req.body;
+    console.log(orders.orders);
+    const result = await UserServices.storeOrdersInDB(
+      Number(req.params.userId),
+      orders,
+    );
+    res.status(200).json({
+      success: true,
+      message: 'Order created successfully!',
+      data: result, // change to null later
     }); // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
@@ -136,8 +163,8 @@ const getTotalPrice = async (req: Request, res: Response) => {
     const result = await UserServices.getTotalPriceValue(Number(userId));
     res.status(200).json({
       success: true,
-      message: 'Order fetched successfully!',
-      data: { totalPrice: result },
+      message: 'Total price calculated successfully!',
+      data: { totalPrice: result.toFixed(2) },
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
@@ -157,6 +184,7 @@ export const UserControllers = {
   getUserById,
   updateUserById,
   deleteUser,
+  storeOrdrs,
   getOrdersById,
   getTotalPrice,
 };

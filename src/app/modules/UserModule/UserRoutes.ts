@@ -17,6 +17,9 @@ router.put('/:userId', UserControllers.updateUserById);
 // delete route to delete user data using user id
 router.delete('/:userId', UserControllers.deleteUser);
 
+// add order to db
+router.put('/:userId/orders', UserControllers.storeOrdrs);
+
 // get orders of specific user
 router.get('/:userId/orders', UserControllers.getOrdersById);
 
