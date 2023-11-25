@@ -11,9 +11,15 @@ const createUser = async (req: Request, res: Response) => {
       success: true,
       message: 'User created successfully!',
       data: result,
+    }); // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: error,
+      message: error.message || 'Something went wrong!',
+      code: 500,
+      data: null,
     });
-  } catch (error) {
-    console.log(error);
   }
 };
 
@@ -24,9 +30,15 @@ const getAllUsers = async (req: Request, res: Response) => {
       success: true,
       message: 'Users fetched successfully!',
       data: result,
+    }); // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: error,
+      message: error.message || 'Something went wrong!',
+      code: 500,
+      data: null,
     });
-  } catch (error) {
-    console.log(error);
   }
 };
 
@@ -39,8 +51,15 @@ const getUserById = async (req: Request, res: Response) => {
       message: 'User fetched successfully!',
       data: result,
     });
-  } catch (error) {
-    console.log(error);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: error,
+      message: error.message || 'Something went wrong!',
+      code: 500,
+      data: null,
+    });
   }
 };
 
@@ -55,9 +74,15 @@ const updateUserById = async (req: Request, res: Response) => {
       success: true,
       message: 'User updated successfully!',
       data: result,
+    }); // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: error,
+      message: error.message || 'Something went wrong!',
+      code: 500,
+      data: null,
     });
-  } catch (error) {
-    console.log(error);
   }
 };
 
@@ -70,9 +95,15 @@ const deleteUser = async (req: Request, res: Response) => {
       success: true,
       message: 'User deleted successfully!',
       data: result,
+    }); // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: error,
+      message: error.message || 'Something went wrong!',
+      code: 500,
+      data: null,
     });
-  } catch (error) {
-    console.log(error);
   }
 };
 export const UserControllers = {

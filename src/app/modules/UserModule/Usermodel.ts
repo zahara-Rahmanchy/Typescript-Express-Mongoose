@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { Address, FullName, Orders, User, IUserModel } from './UserInterface';
-
+import bcrypt from 'bcrypt';
+import config from '../../config';
 const FullNameSchema = new Schema<FullName>({
   firstName: {
     type: String,
@@ -92,6 +93,25 @@ const UserSchema = new Schema<User, IUserModel>({
     required: true,
     message: 'Orders are required',
   },
+});
+
+// hashing the password
+
+UserSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const dbuser = this;
+  dbuser.password = await bcrypt.hash(
+    dbuser.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
+// using post middleware to remove the password from the response
+UserSchema.post('save', async function (doc, next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  doc.password = '';
+  next();
 });
 
 // creating static method to check User
