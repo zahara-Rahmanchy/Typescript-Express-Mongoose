@@ -4,7 +4,7 @@ import { UserValidationSchema } from './User.validators';
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const user = req.body.User;
+    const user = req.body;
     //   console.log(user);
     const { error, value } = UserValidationSchema.validate(user);
 
@@ -78,7 +78,7 @@ const getUserById = async (req: Request, res: Response) => {
 
 const updateUserById = async (req: Request, res: Response) => {
   try {
-    const user = req.body.User;
+    const user = req.body;
     const result = await UserServices.updateUserInDB(
       Number(req.params.userId),
       user,
