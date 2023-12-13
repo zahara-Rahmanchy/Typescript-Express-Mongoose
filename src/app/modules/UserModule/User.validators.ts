@@ -32,5 +32,5 @@ export const UserValidationSchema = Joi.object({
   isActive: Joi.boolean().required(),
   hobbies: Joi.array().items(Joi.string()).required(),
   address: AddressValidationSchema.required(),
-  orders: Joi.array().items(OrdersValidationSchema).required(),
+  orders: Joi.array().items(OrdersValidationSchema),
 });

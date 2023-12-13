@@ -89,8 +89,6 @@ const UserSchema = new Schema<User, IUserModel>({
   },
   orders: {
     type: [OrdersSchema],
-    required: true,
-    message: 'Orders are required',
   },
 });
 

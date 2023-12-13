@@ -3,7 +3,41 @@ import { UserModel } from './Usermodel';
 
 // create user
 const createUserIntoDB = async (user: User) => {
-  const result = await UserModel.create(user);
+  const res = await UserModel.create(user);
+  const {
+    userId,
+    username,
+    fullName,
+    age,
+    email,
+    isActive,
+    hobbies,
+    address,
+    orders,
+  } = res;
+  const res_order = {
+    userId,
+    username,
+    fullName,
+    age,
+    email,
+    isActive,
+    hobbies,
+    address,
+    orders,
+  };
+  const res_without_order = {
+    userId,
+    username,
+    fullName,
+    age,
+    email,
+    isActive,
+    hobbies,
+    address,
+  };
+  const result = orders && orders?.length > 0 ? res_order : res_without_order;
+  console.log('result', result);
   return result;
 };
 
